@@ -1,3 +1,6 @@
+// author: Andrew Holmes
+// dev: Simplified blockchain
+
 const SHA256 = require('crypto-js/sha256');
 
 class Block {
@@ -26,7 +29,7 @@ class Blockchain {
 	}
 	
 	createGenesis() {
-		return new Block(0, "01/01/2017", "Genesis block", "0");
+		return new Block(0, "01/01/2018", "Genesis block", "0");
 	}
 	
 	latestBlock() {
@@ -57,3 +60,11 @@ class Blockchain {
 	
 	}
 }
+
+// Test code
+let jChain = new Blockchain();
+jChain.addBlock(new Block("12/25/2017", {amount: 5}));
+jChain.addBlock(new Block("12/26/2017", {amount: 5}));
+
+console.log(JSON.stringify(jChain, null, 4));
+console.log("Is blockchain valid?" + jChain.checkValid());
