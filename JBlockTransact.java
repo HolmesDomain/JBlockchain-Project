@@ -1,34 +1,38 @@
 package Jblockchain;
-import java.security.*;
 
-public class Wallet {
+import java.security.*;
+import java.util.ArrayList;
+
+public class JBlockTransact {
 	
-	public PrivateKey privatekey;
-	public PublicKey publicKey;
+	public String transactionId;
+	public PublicKey sender;
+	public PublicKey reciepient;
+	public float value;
+	public byte[] signature;
 	
-	public Wallet() {
-		generateKeyPair();
+	public ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
+	public ArrayList<TransactionInput> outputs = new ArrayList<TransactionInput>();
+	
+	private static int sequence = 0; // a rough count of how many transactions have been gen
+	
+	//Constructor
+	public JBlockTransact(PublicKey from, Public to, float value, ArrayList<TransactionInput> inputs) {
+		
+		this.sender = from;
+		this.reciepient = to;
+		this.value = value;
+		this.inputs = inputs;
+		
 	}
 	
-	public void generateKeyPair() {
+	//This calculates the transaction hash
+	private String calculateHash() {
 		
-		try {
-			
-			keyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA","BC");
-			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-			ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
-			// Initialize the key generator and generate a KeyPair
-			keyGen.initialize(ecSpec, random);   //256 bytes provides an acceptable security level
-			KeyPair keyPair = keyGen.generateKeyPair();
-			// Set the public and private keys from the keyPair
-			privateKey = keyPair.getPrivate();
-			publicKey = keyPair.getPublic();
-			
-		} catch(Exception e) {
-			
-			throw new RunTimeException(e);
-			
-		}
+		sequence++;
+		return StringUtil.applySha256(
+			StringUtil.getStringFromKey(sender) + StringUtil.getStringFromKey(reciepient) +
+			Float.toString(value) + sequence);
 	}
 }
 
