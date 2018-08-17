@@ -8,8 +8,10 @@ import java.security.MessageDigest;
 Test Implementation
 
 	public static ArrayList<Block> blockchain = new ArrayList<Block>();
+	public static HashMap<String,TransactionOutputs> UTXOs = new HashMap<String,TransactionOutputs>(); //list of all unspent transactions. 
 	public static int difficulty = 5;
-
+	public static Wallet walletA;
+	public static Wallet walletB;
 	public static void main(String[] args) {
 
 		blockchain.add(new Block("I'm the first block babyyy", "0"));
